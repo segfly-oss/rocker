@@ -10,7 +10,7 @@ There is none!
 It's hard to beat the convenience of adding an alias to your environment for just-in-time containers.
 Assuming you use a `bash` shell, the following alias will get you up and running with Rocker:
 ```
-$ alias rocker='docker run -v /var/run/docker.sock:/var/run/docker.sock -v /etc/ssl:/etc/ssl -v ${HOME}/.rocker_cache:/root/.rocker_cache -v $(pwd):/build -it --rm segfly/rocker'
+$ alias rocker='docker run -v /var/run/docker.sock:/var/run/docker.sock -v ${HOME}/.rocker_cache:/root/.rocker_cache -v $(pwd):/build -it --rm segfly/rocker'
 $ rocker -v
 rocker version 1.3.0 - 9444404 (master) 2016-07-20_13:43_GMT
 ```
@@ -19,6 +19,7 @@ If you want your Rocker alias to persist after reboots or in other shell instanc
 
 ## How it works
 There is a lot going on in that single alias line, so for the curious or security-minded, lets break it down:
+
 1. `alias rocker='...'`
    This is a builtin function of command line shells that allow a set of commands to be repeatedly executed based on a keyword.
 1. `docker run`
@@ -26,11 +27,8 @@ There is a lot going on in that single alias line, so for the curious or securit
 1. `-v /var/run/docker.sock:/var/run/docker.sock`
    This is a bind mount to the local docker daemon.
    While this should scrutinized by security-minded folk, it's necessary with Rocker since the very nature of the tool requires communicating with Docker.
-1. `-v /etc/ssl:/etc/ssl`
-   This bind mounts the local hosts's certificate store.
-   It is currently a workaround for pulling base images from Docker Hub as the Alpine base-image certificates for Rocker do not seem to cover the CA used by Docker Hub.
 1. `-v ${HOME}/.rocker_cache:/root/.rocker_cache`
-   Another bind mount to the user's home directory running Rocker.
+   A bind mount to the user's home directory running Rocker.
    It allows Rocker to persist Dockerfile build layers in a cache outside of Docker.
 1. `-v $(pwd):/build`
    This bind mounts the current working directory as the `/build` directory inside the container.
@@ -45,9 +43,11 @@ There is a lot going on in that single alias line, so for the curious or securit
   This has the side-effect that the `${HOME}/.rocker_cache` directory and contents will be owned by root.
   If this is a problem, alternatively `/tmp/.rocker_cache` could be used, but be aware of the implications of keeping the cache in a common place in a multi-user environment.
 * Have not tried the suggested alias in any other shells besides `bash`.
-* The precompiled Rocker binaries depend on `glibc` which is not present in Alpine Linux by default.
-  To resolve this, a base image containing a `glibc` build for Alpine is used.
-  This adds a couple more megabytes to the image than if Rocker was compiled directly against `musl`.
-  
+
+# Special Thanks To
+[Christopher Hogan](https://github.com/forktheweb) - ca-certs bugfix
+
+Reejesh Kadanjoth - Adding proper version info to musl build
+
 # References
 https://github.com/grammarly/rocker
