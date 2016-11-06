@@ -31,5 +31,5 @@ RUN set -o xtrace -o errexit &&\
     rm -rf /usr/local/go &&\
     rm -rf /go
 
-WORKDIR /build
-ENTRYPOINT ["/usr/bin/rocker"]
+COPY entrypoint.sh /etc/entrypoint.sh
+ENTRYPOINT ["/etc/entrypoint.sh"]
