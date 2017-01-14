@@ -10,7 +10,7 @@ There is none!
 It's hard to beat the convenience of adding an alias to your environment for just-in-time containers.
 Assuming you use a `bash` shell, the following alias will get you up and running with Rocker:
 ```
-$ alias rocker='docker run --env-file <(printenv | grep -v HOME) -v /var/run/docker.sock:/var/run/docker.sock -v "${HOME}/.rocker_cache":/root/.rocker_cache -v "$(pwd)":"$(pwd)" -e HPWD="$(pwd)" -it --rm segfly/rocker:1.3.0b
+$ alias rocker='docker run --env-file <(printenv | grep -v HOME) -v /var/run/docker.sock:/var/run/docker.sock -v "${HOME}/.docker":/root/.docker -v "${HOME}/.rocker_cache":/root/.rocker_cache -v "$(pwd)":"$(pwd)" -e HPWD="$(pwd)" -it --rm segfly/rocker:1.3.0b'
 $ rocker -v
 rocker version 1.3.0 - 9444404 (master) 2016-07-20_13:43_GMT
 ```
